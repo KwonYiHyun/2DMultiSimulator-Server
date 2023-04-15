@@ -100,7 +100,6 @@ public class GameRoom : JobSerializer
 {
     public int RoomId { get; set; }
     public GameRoomManager roomManager { get; set; }
-    public Map Map { get; private set; } = new Map();
 
     public System.Timers.Timer timer;
 
@@ -110,7 +109,7 @@ public class GameRoom : JobSerializer
 
     public void Init(int mapId)
     {
-        Map.LoadMap(mapId);
+        
     }
 
     public void Update()
@@ -234,32 +233,9 @@ public class GameRoom : JobSerializer
         }
     }
 
-    public void HandleMove(Player player, C_PlayerMove movePacket)
+    public void HandleMove(Player player, C_Move movePacket)
     {
-        if (player == null)
-            return;
-
-        // TODO : 검증
-        PositionInfo movePosInfo = movePacket.positionInfo;
-        ObjectInfo info = player.Info;
-
-        // 다른 좌표로 이동할 경우, 갈 수 있는지 체크
-        if (movePosInfo.posX != info.positionInfo.posX || movePosInfo.posY != info.positionInfo.posY)
-        {
-            if (Map.CanGo(new Vector2Int(movePosInfo.posX, movePosInfo.posY)) == false)
-                return;
-        }
-
-        // info.PosInfo.State = movePosInfo.State;
-        // info.PosInfo.MoveDir = movePosInfo.MoveDir;
-        Map.ApplyMove(player, new Vector2Int(movePosInfo.posX, movePosInfo.posY));
-
-        // 다른 플레이어한테도 알려준다
-        S_Move resMovePacket = new S_Move();
-        resMovePacket.objectId = player.Info.objectId;
-        resMovePacket.positionInfo = movePacket.positionInfo;
-
-        Broadcast(resMovePacket);
+        
     }
 
     public void HandleSkill(Player player)

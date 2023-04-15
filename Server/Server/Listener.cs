@@ -117,8 +117,7 @@ public class Listener
                                 "======RunAsync SocketException Error======\n" +
                                 "==========================================\n" + e + "\n" +
                                 "==========================================");
-        }
-        catch (Exception e)
+        }catch (Exception e)
         {
             Console.WriteLine("====================================\n" +
                                 "======RunAsync Exception Error======\n" +

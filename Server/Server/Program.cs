@@ -28,11 +28,5 @@ class Program
 
         listener.Init(endPoint, 50);
         await listener.StartAsync();
-
-        while (true)
-        {
-            Console.WriteLine("Main Thread");
-            Thread.Sleep(1000);
-        }
     }
 }
