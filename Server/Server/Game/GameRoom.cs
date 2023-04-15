@@ -5,97 +5,6 @@ using System.Threading.Tasks;
 using Core;
 
 
-public class GameLobby : GameRoom
-{
-    object _lock = new object();
-
-    List<Player> _players = new List<Player>();
-
-    // 오른쪽 팀 기본 위치
-    ObjectInfo rightTeamBaseInfo = new ObjectInfo()
-    {
-        positionInfo = new PositionInfo()
-        {
-            posX = 5,
-            posY = 1,
-            posZ = 0
-        }
-    };
-
-    // 왼쪽 팀 기본 위치
-    ObjectInfo leftTeamBaseInfo = new ObjectInfo()
-    {
-        positionInfo = new PositionInfo()
-        {
-            posX = -5,
-            posY = 1,
-            posZ = 0
-        }
-    };
-
-    public void RegisterPlayer(Player player)
-    {
-        lock (_lock)
-        {
-            _players.Add(player);
-        }
-    }
-
-    public void TryMatchmaking(Player player)
-    {
-        lock (_lock)
-        {
-            foreach (Player otherPlayer in _players)
-            {
-                if (player.Id != otherPlayer.Id)
-                {
-
-                    StartGame(player, otherPlayer);
-
-                    _players.Remove(player);
-                    _players.Remove(otherPlayer);
-
-                    break;
-                }
-            }
-        }
-    }
-
-    private async void StartGame(Player player1, Player player2)
-    {
-        GameRoom room = GameRoomManager.Instance.Generate();
-
-        rightTeamBaseInfo.objectId = player1.Id;
-        leftTeamBaseInfo.objectId = player2.Id;
-
-        S_StartGame startPacket1 = new S_StartGame();
-        S_StartGame startPacket2 = new S_StartGame();
-        startPacket1.msg = "200";
-        startPacket2.msg = "200";
-        startPacket1.objectInfo = rightTeamBaseInfo;
-        startPacket2.objectInfo = leftTeamBaseInfo;
-
-        player1.Info = rightTeamBaseInfo;
-        player2.Info = leftTeamBaseInfo;
-
-        player1.Position = new Vector(5, 0);
-        player2.Position = new Vector(-5, 0);
-
-        player1.Room = room;
-        player2.Room = room;
-
-        await player1.Session.SendAsync(startPacket1.Serialize());
-        await player2.Session.SendAsync(startPacket2.Serialize());
-
-    }
-
-    public override void Leave(int objectId)
-    {
-        base.Leave(objectId);
-
-    }
-}
-
 public class GameRoom : JobSerializer
 {
     public int RoomId { get; set; }
@@ -235,7 +144,9 @@ public class GameRoom : JobSerializer
 
     public void HandleMove(Player player, C_Move movePacket)
     {
-        
+        PositionInfo moveInfo = movePacket.positionInfo;
+
+        player.Info.positionInfo = moveInfo;
     }
 
     public void HandleSkill(Player player)

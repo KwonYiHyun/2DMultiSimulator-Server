@@ -714,6 +714,7 @@ public class S_Move : IPacket
 public class C_Move : IPacket
 {
     public short Protocol { get; set; } = (short)PacketType.C_Move;
+    public float speed;
     public PositionInfo positionInfo { get; set; } = new PositionInfo();
     
     public int offset = 0;
@@ -731,10 +732,12 @@ public class C_Move : IPacket
     {
         byte[] packetType = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Protocol));
         
-        byte[] PositionInfoPkt = positionInfo.Serialize();
+        byte[] speedPkt = BitConverter.GetBytes(speed);
+        byte[] speedSize = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)speedPkt.Length));
+	byte[] PositionInfoPkt = positionInfo.Serialize();
         byte[] PositionInfoSize = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)PositionInfoPkt.Length));
 	
-	short dataSize = (short)(packetType.Length + PositionInfoPkt.Length + PositionInfoSize.Length);
+	short dataSize = (short)(packetType.Length + speedPkt.Length + speedSize.Length + PositionInfoPkt.Length + PositionInfoSize.Length);
         byte[] header = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(dataSize));
 
         byte[] buffer = new byte[2 + dataSize];
@@ -747,7 +750,12 @@ public class C_Move : IPacket
         Array.Copy(packetType, 0, buffer, offset, packetType.Length);
         offset += packetType.Length;
         
-        Array.Copy(PositionInfoSize, 0, buffer, offset, PositionInfoSize.Length);
+        Array.Copy(speedSize, 0, buffer, offset, speedSize.Length);
+        offset += speedSize.Length;
+        Array.Copy(speedPkt, 0, buffer, offset, speedPkt.Length);
+        offset += speedPkt.Length;
+
+	Array.Copy(PositionInfoSize, 0, buffer, offset, PositionInfoSize.Length);
         offset += PositionInfoSize.Length;
         Array.Copy(PositionInfoPkt, 0, buffer, offset, PositionInfoPkt.Length);
         offset += PositionInfoPkt.Length;
@@ -760,7 +768,13 @@ public class C_Move : IPacket
     {
         offset = 2;
 
-        short positionInfoSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(buffer, offset));
+        short speedSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(buffer, offset));
+        offset += sizeof(short);
+        
+        speed = BitConverter.ToSingle(buffer, offset);
+        offset += speedSize;
+        
+	short positionInfoSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(buffer, offset));
         offset += sizeof(short);
         
         PositionInfo _positionInfo = new PositionInfo();
@@ -776,9 +790,8 @@ public class C_Move : IPacket
 public class PositionInfo : IPacket
 {
     public short Protocol { get; set; } = (short)PacketType.PositionInfo;
-    public int posX;
-    public int posY;
-    public int posZ;
+    public float posX;
+    public float posY;
     
     public int offset = 0;
     public int typeSizeSum
@@ -799,10 +812,8 @@ public class PositionInfo : IPacket
         byte[] posXSize = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)posXPkt.Length));
 	byte[] posYPkt = BitConverter.GetBytes(posY);
         byte[] posYSize = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)posYPkt.Length));
-	byte[] posZPkt = BitConverter.GetBytes(posZ);
-        byte[] posZSize = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)posZPkt.Length));
 	
-	short dataSize = (short)(packetType.Length + posXPkt.Length + posXSize.Length + posYPkt.Length + posYSize.Length + posZPkt.Length + posZSize.Length);
+	short dataSize = (short)(packetType.Length + posXPkt.Length + posXSize.Length + posYPkt.Length + posYSize.Length);
         byte[] header = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(dataSize));
 
         byte[] buffer = new byte[2 + dataSize];
@@ -825,11 +836,6 @@ public class PositionInfo : IPacket
         Array.Copy(posYPkt, 0, buffer, offset, posYPkt.Length);
         offset += posYPkt.Length;
 
-	Array.Copy(posZSize, 0, buffer, offset, posZSize.Length);
-        offset += posZSize.Length;
-        Array.Copy(posZPkt, 0, buffer, offset, posZPkt.Length);
-        offset += posZPkt.Length;
-
 	
         return buffer;
     }
@@ -841,20 +847,14 @@ public class PositionInfo : IPacket
         short posXSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(buffer, offset));
         offset += sizeof(short);
         
-        posX = BitConverter.ToInt32(buffer, offset);
+        posX = BitConverter.ToSingle(buffer, offset);
         offset += posXSize;
         
 	short posYSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(buffer, offset));
         offset += sizeof(short);
         
-        posY = BitConverter.ToInt32(buffer, offset);
+        posY = BitConverter.ToSingle(buffer, offset);
         offset += posYSize;
-        
-	short posZSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(buffer, offset));
-        offset += sizeof(short);
-        
-        posZ = BitConverter.ToInt32(buffer, offset);
-        offset += posZSize;
         
 	
     }

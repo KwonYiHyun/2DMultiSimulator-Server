@@ -14,28 +14,25 @@ public class ClientSession : Session
 
     public GameRoom Room;
 
-    public async override void OnConnected()
+    public override void OnConnected()
     {
         Console.WriteLine("OnConnected");
+        Room = GameRoomManager.Instance.gameRoom;
 
         MyPlayer = ObjectManager.Instance.Add<Player>();
         MyPlayer.Position = new Vector(0, 0);
 
         MyPlayer.Session = this;
 
-        S_Connect connectPkt = new S_Connect();
-        connectPkt.id = MyPlayer.Id;
-
-        await MyPlayer.Session.SendAsync(connectPkt.Serialize());
-
-        Room = GameRoomManager.Instance.gameLobby;
-        // Room.Push(Room.Enter, MyPlayer);
-        GameRoomManager.Instance.gameLobby.RegisterPlayer(MyPlayer);
+        // S_Connect connectPkt = new S_Connect();
+        // connectPkt.id = MyPlayer.Id;
+        // await MyPlayer.Session.SendAsync(connectPkt.Serialize());
     }
 
     public override void OnDisconnected()
     {
-        MyPlayer.Room.Leave(MyPlayer.Id);
+        if (MyPlayer.Room != null)
+            MyPlayer.Room.Leave(MyPlayer.Id);
     }
 
     public override Task<int> ReceiveAsync(byte[] headerBuffer, SocketFlags flags = SocketFlags.None)

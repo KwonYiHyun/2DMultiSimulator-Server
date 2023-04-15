@@ -3,29 +3,29 @@
 public class Vector
 {
     public float x;
-    public float z;
+    public float y;
 
     public Vector()
     {
         x = 0;
-        z = 0;
+        y = 0;
     }
 
-    public Vector(float x, float z)
+    public Vector(float x, float y)
     {
         this.x = x;
-        this.z = z;
+        this.y = y;
     }
 
     public Vector(PositionInfo pos)
     {
         x = pos.posX;
-        z = pos.posZ;
+        y = pos.posY;
     }
 
     public double Magnitude()
     {
-        return Math.Sqrt(x * x + z * z);
+        return Math.Sqrt(x * x + y * y);
     }
 
     public Vector Normalize()
@@ -35,36 +35,36 @@ public class Vector
         {
             return new Vector(0, 0);
         }
-        return new Vector((float)(x / magnitude), (float)(z / magnitude));
+        return new Vector((float)(x / magnitude), (float)(y / magnitude));
     }
 
     public static Vector operator -(Vector v1, Vector v2)
     {
-        return new Vector(v1.x - v2.x, v1.z - v2.z);
+        return new Vector(v1.x - v2.x, v1.y - v2.y);
     }
 
     public static Vector operator +(Vector v1, Vector v2)
     {
-        return new Vector(v1.x + v2.x, v1.z + v2.z);
+        return new Vector(v1.x + v2.x, v1.y + v2.y);
     }
 
     public static Vector operator *(Vector v1, float f1)
     {
-        return new Vector((float)Math.Round((double)v1.x * f1), (float)Math.Round((double)v1.z * f1));
+        return new Vector((float)Math.Round((double)v1.x * f1), (float)Math.Round((double)v1.y * f1));
     }
 
     public static Vector operator /(Vector v1, float f1)
     {
-        return new Vector((float)Math.Round((double)v1.x / f1), (float)Math.Round((double)v1.z / f1));
+        return new Vector((float)Math.Round((double)v1.x / f1), (float)Math.Round((double)v1.y / f1));
     }
 
     public static bool operator ==(Vector v1, Vector v2)
     {
-        return (v1.x == v2.x && v1.z == v2.z);
+        return (v1.x == v2.x && v1.y == v2.y);
     }
 
     public static bool operator !=(Vector v1, Vector v2)
     {
-        return (v1.x != v2.x || v1.z != v2.z);
+        return (v1.x != v2.x || v1.y != v2.y);
     }
 }

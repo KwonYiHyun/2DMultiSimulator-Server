@@ -8,30 +8,23 @@ public class GameRoomManager
 {
     public static GameRoomManager Instance { get; } = new GameRoomManager();
 
-    public GameLobby gameLobby;
+    public GameRoom gameRoom;
     public List<System.Timers.Timer> _timers = new List<System.Timers.Timer>();
 
     int _roomId = 0;
-    Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();
+    
     object _lock = new object();
-
-    public Dictionary<int, GameRoom> Rooms
-    {
-        get
-        {
-            return _rooms;
-        }
-    }
 
     public GameRoomManager()
     {
-        gameLobby = new GameLobby();
-        gameLobby.roomManager = this;
-        gameLobby.TickRoom();
+        gameRoom = new GameRoom();
+        gameRoom.roomManager = this;
+        gameRoom.TickRoom();
     }
 
     public GameRoom Generate()
     {
+        /*
         lock (_lock)
         {
             int roomId = ++_roomId;
@@ -44,10 +37,13 @@ public class GameRoomManager
 
             return room;
         }
+        */
+        return null;
     }
 
     public GameRoom Find(int roomId)
     {
+        /*
         lock (_lock)
         {
             GameRoom room = null;
@@ -56,10 +52,13 @@ public class GameRoomManager
 
             return null;
         }
+        */
+        return null;
     }
 
     public bool Remove(int roomId)
     {
+        /*
         lock (_lock)
         {
             GameRoom room = null;
@@ -68,5 +67,7 @@ public class GameRoomManager
             _timers.Remove(room.timer);
             return _rooms.Remove(roomId);
         }
+        */
+        return false;
     }
 }
