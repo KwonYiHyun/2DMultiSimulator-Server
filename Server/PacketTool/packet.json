@@ -1,0 +1,107 @@
+{
+  "S_Connect": [
+    {
+      "int": "id"
+    }
+  ],
+  "C_Connect": [
+    {
+      "string": "msg"
+    }
+  ],
+  "S_Matching": [
+    {
+      "int": "info"
+    }
+  ],
+  "C_Matching": [
+    {
+      "int": "id"
+    }
+  ],
+  "S_StartGame": [
+    {
+      "string": "msg",
+      "Class": "ObjectInfo"
+    }
+  ],
+  "C_StartGame": [
+    {
+      "string": "msg"
+    }
+  ],
+  "S_EnterGame": [
+    {
+      "Class": "ObjectInfo"
+    }
+  ],
+  "C_EnterGame": [
+    {
+      "string": "msg"
+    }
+  ],
+  "S_LeaveGame": [
+    {
+      "int": "objectId"
+    }
+  ],
+  "S_Spawn": [
+    {
+      "list": [ "Class", "ObjectInfo" ],
+      "list": [ "int", "arrr" ]
+    }
+  ],
+  "S_Despawn": [
+    {
+      "list": [ "int", "objectId" ]
+    }
+  ],
+  "S_PlayerMove": [
+    {
+      "int": "objectId",
+      "Class": "PositionInfo"
+    }
+  ],
+  "C_PlayerMove": [
+    {
+      "Class": "PositionInfo"
+    }
+  ],
+  "S_Move": [
+    {
+      "int": "objectId",
+      "Class": "PositionInfo"
+    }
+  ],
+  "C_Move": [
+    {
+      "Class": "PositionInfo"
+    }
+  ]
+  "Class_PositionInfo": [
+    {
+      "int": "posX",
+      "int": "posY",
+      "int": "posZ",
+    }
+  ],
+  "Class_ObjectInfo": [
+    {
+      "int": "objectId",
+      "Class": "PositionInfo"
+    }
+  ],
+  "C_Test": [
+    {
+      "list": [ "Class", "ObjectInfo" ]
+    }
+  ],
+  "C_TestTest": [
+    {
+      "list": [ "int", "array" ]
+    }
+  ]
+  "S_PacketEnd": [
+
+  ]
+}
