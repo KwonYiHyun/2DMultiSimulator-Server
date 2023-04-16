@@ -12,13 +12,17 @@ public class GameRoom : JobSerializer
 
     public System.Timers.Timer timer;
 
-    Dictionary<int, Player> _players = new Dictionary<int, Player>();
-    Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
-
+    public Dictionary<int, Player> _players = new Dictionary<int, Player>();
+    public Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
 
     public void Init(int mapId)
     {
-        
+        Magic magic = ObjectManager.Instance.Add<Magic>();
+        magic.PosInfo.posX = 4;
+        magic.PosInfo.posY = -3;
+
+        magic.Room = this;
+        _projectiles.Add(magic.Id, magic);
     }
 
     public void Update()
@@ -52,7 +56,7 @@ public class GameRoom : JobSerializer
             // TODO : 본인에게 정보 전송
             {
                 S_EnterGame enterPacket = new S_EnterGame();
-                enterPacket.objectInfo = player.Info;
+                enterPacket.objectInfo = player.objectInfo;
                 await player.Session.SendAsync(enterPacket.Serialize());
 
                 S_Spawn spawnPacket = new S_Spawn();
@@ -61,9 +65,15 @@ public class GameRoom : JobSerializer
                 {
                     if (player != p)
                     {
-                        spawnPacket.objectInfoList.Add(p.Info);
+                        spawnPacket.objectInfoList.Add(p.objectInfo);
                     }
                 }
+
+                foreach (Projectile p in _projectiles.Values)
+                {
+                    spawnPacket.objectInfoList.Add(p.objectInfo);
+                }
+
                 if (spawnPacket.objectInfoList.Count > 0)
                 {
                     await player.Session.SendAsync(spawnPacket.Serialize());
@@ -80,7 +90,7 @@ public class GameRoom : JobSerializer
         // TODO : 타인에게 정보 전송
         {
             S_Spawn spawnPacket = new S_Spawn();
-            spawnPacket.objectInfoList.Add(gameObject.Info);
+            spawnPacket.objectInfoList.Add(gameObject.objectInfo);
 
             foreach (Player p in _players.Values)
             {
@@ -146,7 +156,8 @@ public class GameRoom : JobSerializer
     {
         PositionInfo moveInfo = movePacket.positionInfo;
 
-        player.Info.positionInfo = moveInfo;
+        // player.objectInfo.positionInfo = moveInfo;
+        player.targetPosition = new Vector(moveInfo);
     }
 
     public void HandleSkill(Player player)

@@ -23,6 +23,9 @@ public static class PacketManager
 		action.Add(PacketType.C_Move, packetHandler.C_MoveAction);
         packetTypes.Add(PacketType.C_Move, MakePacket<C_Move>);
 
+		action.Add(PacketType.C_Hit, packetHandler.C_HitAction);
+        packetTypes.Add(PacketType.C_Hit, MakePacket<C_Hit>);
+
 		
     }
 

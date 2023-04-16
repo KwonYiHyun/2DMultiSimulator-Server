@@ -9,16 +9,6 @@
       "string": "msg"
     }
   ],
-  "S_Matching": [
-    {
-      "int": "info"
-    }
-  ],
-  "C_Matching": [
-    {
-      "int": "id"
-    }
-  ],
   "S_StartGame": [
     {
       "string": "msg",
@@ -56,17 +46,6 @@
       "list": [ "int", "objectId" ]
     }
   ],
-  "S_PlayerMove": [
-    {
-      "int": "objectId",
-      "Class": "PositionInfo"
-    }
-  ],
-  "C_PlayerMove": [
-    {
-      "Class": "PositionInfo"
-    }
-  ],
   "S_Move": [
     {
       "int": "objectId",
@@ -75,30 +54,30 @@
   ],
   "C_Move": [
     {
+      "float": "speed",
       "Class": "PositionInfo"
     }
-  ]
+  ],
+  "S_Hit": [
+    {
+      "Class": "ObjectInfo"
+    }
+  ],
+  "C_Hit": [
+    {
+      "Class": "ObjectInfo"
+    }
+  ],
   "Class_PositionInfo": [
     {
-      "int": "posX",
-      "int": "posY",
-      "int": "posZ",
+      "float": "posX",
+      "float": "posY",
     }
   ],
   "Class_ObjectInfo": [
     {
       "int": "objectId",
       "Class": "PositionInfo"
-    }
-  ],
-  "C_Test": [
-    {
-      "list": [ "Class", "ObjectInfo" ]
-    }
-  ],
-  "C_TestTest": [
-    {
-      "list": [ "int", "array" ]
     }
   ]
   "S_PacketEnd": [

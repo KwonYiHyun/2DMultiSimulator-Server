@@ -38,6 +38,17 @@ public class PacketHandler
         player.movementSpeed = movePacket.speed;
 
         room.Push(room.HandleMove, player, movePacket);
+
+        S_Move mPkt = new S_Move();
+        mPkt.objectId = player.objectInfo.objectId;
+        mPkt.positionInfo = movePacket.positionInfo;
+        room.Push(room.Broadcast, mPkt);
+
         Console.WriteLine($"[move] {session.MyPlayer.Id} {movePacket.positionInfo.posX} / {movePacket.positionInfo.posY} speed = {movePacket.speed}");
+    }
+
+    public void C_HitAction(ClientSession session, IPacket packet)
+    {
+
     }
 }

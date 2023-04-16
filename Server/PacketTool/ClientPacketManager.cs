@@ -17,9 +17,6 @@ public class PacketManager
         action.Add(PacketType.S_Connect, packetHandler.S_ConnectAction);
         packetTypes.Add(PacketType.S_Connect, MakePacket<S_Connect>);
 
-		action.Add(PacketType.S_Matching, packetHandler.S_MatchingAction);
-        packetTypes.Add(PacketType.S_Matching, MakePacket<S_Matching>);
-
 		action.Add(PacketType.S_StartGame, packetHandler.S_StartGameAction);
         packetTypes.Add(PacketType.S_StartGame, MakePacket<S_StartGame>);
 
@@ -35,11 +32,11 @@ public class PacketManager
 		action.Add(PacketType.S_Despawn, packetHandler.S_DespawnAction);
         packetTypes.Add(PacketType.S_Despawn, MakePacket<S_Despawn>);
 
-		action.Add(PacketType.S_PlayerMove, packetHandler.S_PlayerMoveAction);
-        packetTypes.Add(PacketType.S_PlayerMove, MakePacket<S_PlayerMove>);
-
 		action.Add(PacketType.S_Move, packetHandler.S_MoveAction);
         packetTypes.Add(PacketType.S_Move, MakePacket<S_Move>);
+
+		action.Add(PacketType.S_Hit, packetHandler.S_HitAction);
+        packetTypes.Add(PacketType.S_Hit, MakePacket<S_Hit>);
 
 		
     }

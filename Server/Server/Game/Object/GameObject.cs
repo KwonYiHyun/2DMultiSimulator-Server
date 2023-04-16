@@ -8,18 +8,20 @@ public class GameObject
 
     public int Id
     {
-        get { return Info.objectId; }
-        set { Info.objectId = value; }
+        get { return objectInfo.objectId; }
+        set { objectInfo.objectId = value; }
     }
+
+    public float radius = 0.25f;
 
     public GameRoom Room { get; set; }
 
-    public ObjectInfo Info { get; set; } = new ObjectInfo();
+    public ObjectInfo objectInfo { get; set; } = new ObjectInfo();
 
     public PositionInfo PosInfo { get; private set; } = new PositionInfo();
 
     public GameObject()
     {
-        Info.positionInfo = PosInfo;
+        objectInfo.positionInfo = PosInfo;
     }
 }

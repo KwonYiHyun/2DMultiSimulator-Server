@@ -50,7 +50,7 @@ public class Listener
             while (true)
             {
                 var recvTask = session.ReceiveAsync(headerBuffer);
-                var timeoutTask = Task.Delay(1000 * 20);
+                var timeoutTask = Task.Delay(1000 * 200);
 
                 var result = await Task.WhenAny(recvTask, timeoutTask);
 

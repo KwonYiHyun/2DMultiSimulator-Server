@@ -13,4 +13,9 @@ public class Projectile : GameObject
     {
 
     }
+
+    public virtual bool isHit(GameObject player, GameObject projectile)
+    {
+        return false;
+    }
 }

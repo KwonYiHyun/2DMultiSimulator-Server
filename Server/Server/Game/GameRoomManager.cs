@@ -18,6 +18,7 @@ public class GameRoomManager
     public GameRoomManager()
     {
         gameRoom = new GameRoom();
+        gameRoom.Init(1);
         gameRoom.roomManager = this;
         gameRoom.TickRoom();
     }
