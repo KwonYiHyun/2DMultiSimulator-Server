@@ -32,13 +32,15 @@ public class Player : GameObject
 
         _nextMoveTick = Environment.TickCount64 + 100;
 
-        // TODO 백터 정규화 전에 현재위치와 비교하여 1보다 작은지 확인
         if (Position == targetPosition) return;
-        Vector diff = Position - targetPosition;
-        if (MathF.Abs(diff.x) <= 0.3 && MathF.Abs(diff.y) <= 0.3) return;
+        
+        // Vector diff = Position - targetPosition;
+        // if (MathF.Abs(diff.x) <= 0.3 && MathF.Abs(diff.y) <= 0.3) return;
 
+        // 차이 백터가 1 이상이면 정규화 시켜서 사용
         Vector normalize = targetPosition - Position;
-        normalize = normalize.Normalize();
+        if (normalize >= 1)
+            normalize = normalize.Normalize();
 
         Vector targetVector = Position + normalize;
 

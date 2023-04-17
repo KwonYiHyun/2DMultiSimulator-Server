@@ -67,4 +67,14 @@ public class Vector
     {
         return (v1.x != v2.x || v1.y != v2.y);
     }
+
+    public static bool operator <=(Vector v1, int i1)
+    {
+        return (Math.Abs(v1.x) <= i1 || Math.Abs(v1.y) <= i1);
+    }
+
+    public static bool operator >=(Vector v1, int i1)
+    {
+        return (Math.Abs(v1.x) >= i1 || Math.Abs(v1.y) >= i1);
+    }
 }
