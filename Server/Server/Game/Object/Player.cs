@@ -30,12 +30,9 @@ public class Player : GameObject
         if (_nextMoveTick >= Environment.TickCount64)
             return;
 
-        _nextMoveTick = Environment.TickCount64 + 100;
+        // _nextMoveTick = Environment.TickCount64 + 100;
 
         if (Position == targetPosition) return;
-        
-        // Vector diff = Position - targetPosition;
-        // if (MathF.Abs(diff.x) <= 0.3 && MathF.Abs(diff.y) <= 0.3) return;
 
         // 차이 백터가 1 이상이면 정규화 시켜서 사용
         Vector normalize = targetPosition - Position;
@@ -52,6 +49,11 @@ public class Player : GameObject
 
         objectInfo.positionInfo = pos;
 
-        Console.WriteLine("Player Position [x : " + pos.posX + ", y : " + pos.posY + "]");
+        S_Move move = new S_Move();
+        move.objectId = objectInfo.objectId;
+        move.positionInfo = objectInfo.positionInfo;
+        Room.Push(Room.Broadcast, move);
+
+        Console.WriteLine($"Player [{move.objectId}] Position [x : {pos.posX}, y : {pos.posY}]");
     }
 }

@@ -17,6 +17,7 @@ public class Listener
         socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         socket.Bind(endPoint);
         socket.Listen(backlog);
+        socket.NoDelay = true;
     }
 
     public async Task StartAsync()

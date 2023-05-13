@@ -14,7 +14,7 @@ public class ClientSession : Session
 
     public GameRoom Room;
 
-    public override void OnConnected()
+    public override async void OnConnected()
     {
         Console.WriteLine("OnConnected");
         Room = GameRoomManager.Instance.gameRoom;
@@ -24,15 +24,15 @@ public class ClientSession : Session
 
         MyPlayer.Session = this;
 
-        // S_Connect connectPkt = new S_Connect();
-        // connectPkt.id = MyPlayer.Id;
-        // await MyPlayer.Session.SendAsync(connectPkt.Serialize());
+        S_Connect connectPkt = new S_Connect();
+        connectPkt.id = MyPlayer.Id;
+        await MyPlayer.Session.SendAsync(connectPkt.Serialize());
     }
 
     public override void OnDisconnected()
     {
         if (MyPlayer.Room != null)
-            MyPlayer.Room.Leave(MyPlayer.Id);
+            MyPlayer.Room.Push(MyPlayer.Room.Leave, MyPlayer.Id);
     }
 
     public override Task<int> ReceiveAsync(byte[] headerBuffer, SocketFlags flags = SocketFlags.None)
@@ -47,7 +47,14 @@ public class ClientSession : Session
 
     public override Task<int> SendAsync(byte[] headerBuffer, SocketFlags flags = SocketFlags.None)
     {
-        return socket.SendAsync(headerBuffer, flags);
+        try
+        {
+            return socket.SendAsync(headerBuffer, flags);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     public override Task<int> SendAsync(ArraySegment<byte> buffer, SocketFlags flags = SocketFlags.None)

@@ -17,12 +17,7 @@ public class GameRoom : JobSerializer
 
     public void Init(int mapId)
     {
-        Magic magic = ObjectManager.Instance.Add<Magic>();
-        magic.PosInfo.posX = 4;
-        magic.PosInfo.posY = -3;
-
-        magic.Room = this;
-        _projectiles.Add(magic.Id, magic);
+        
     }
 
     public void Update()
@@ -121,12 +116,9 @@ public class GameRoom : JobSerializer
             // TODO : 본인에게 정보 전송
             {
                 S_LeaveGame leavePacket = new S_LeaveGame();
-                await player.Session.SendAsync(leavePacket.Serialize());
-            }
-            // Player가 나갔을 때 남은인원 0명이명 방 폭파
-            if (_players.Count == 0)
-            {
-                // GameRoomManager.Instance.Remove(RoomId);
+                leavePacket.objectId = objectId;
+                Broadcast(leavePacket);
+                // await player.Session.SendAsync(leavePacket.Serialize());
             }
         }
         else if (type == GameObjectType.Projectile)
@@ -156,13 +148,7 @@ public class GameRoom : JobSerializer
     {
         PositionInfo moveInfo = movePacket.positionInfo;
 
-        // player.objectInfo.positionInfo = moveInfo;
         player.targetPosition = new Vector(moveInfo);
-    }
-
-    public void HandleSkill(Player player)
-    {
-
     }
 
     public async void Broadcast(IPacket packet)

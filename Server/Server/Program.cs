@@ -22,7 +22,7 @@ class Program
         */
 
         IPAddress ipA = IPAddress.Parse("127.0.0.1");
-        IPEndPoint endPoint = new IPEndPoint(ipA, 8877);
+        IPEndPoint endPoint = new IPEndPoint(ipA, 7777);
 
         Console.WriteLine($"OS : {Environment.OSVersion} \nEndPoint : {endPoint}");
 
